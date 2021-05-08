@@ -1,0 +1,44 @@
+﻿@using Mvc_Stok.Models.Entity
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<Tbl_Musteriler>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@*@using (Html.BeginForm("Index", "Musteri", FormMethod.Get)) 
+{
+    <p>
+        Aranacak Müşteri adı:@Html.TextBox("t")
+        <input type="submit" value="Ara"/>
+    </p>
+}*@
+
+<table class="table table-bordered">
+    <tr>
+        <th>MÜSTERİ ID</th>
+        <th>MÜSTERİ ADI</th>
+        <th>MÜŞTERİ SOYADI</th>
+        <th>SİL</th>
+        <th>GÜNCELLE</th>
+        <th>ALERT</th>
+
+    </tr>
+    <tbody>
+        @foreach (var mstr in Model)
+{
+            <tr>
+                <th>@mstr.MsuteriId</th>
+                <td>@mstr.MusteriAdı</td>
+                <td>@mstr.MusteriSoyadı</td>
+                <td><a href="/MUSTERI/SIL/@mstr.MsuteriId" class="btn btn-danger">Sil</a></td>
+                <td><a href="/MUSTERI/MusteriGetir/@mstr.MsuteriId" class="btn btn-success">Güncelle</a></td>  @*GUNCELLE den MusteriGetir cekildi*@
+                <td>@Html.ActionLink("SİL", "SIL", new { id = mstr.MsuteriId }, new { @class = "btn btn-warning", onclick = "return confirm('Silme işlemini onaylıyor musunuz ? ')" })</td>
+            </tr>
+            }
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList)Model, sayfa => Url.Action("Index", new { sayfa }))
+<a href="/MUSTERI/MusteriEkle/class=" btn btn-primary">Yeni Müşteri Ekle</a>
+

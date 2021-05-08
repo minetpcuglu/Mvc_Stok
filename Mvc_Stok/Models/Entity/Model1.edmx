@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MvcDbStokModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tbl_Kategoriler">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KategoriAdı" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_Musteriler">
+          <Key>
+            <PropertyRef Name="MsuteriId" />
+          </Key>
+          <Property Name="MsuteriId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MusteriAdı" Type="nvarchar" MaxLength="50" />
+          <Property Name="MusteriSoyadı" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_Satıslar">
+          <Key>
+            <PropertyRef Name="SatısId" />
+          </Key>
+          <Property Name="SatısId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Urun" Type="int" />
+          <Property Name="Musteri" Type="int" />
+          <Property Name="Adet" Type="tinyint" />
+          <Property Name="Fiyat" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Tbl_Urunler">
+          <Key>
+            <PropertyRef Name="UrunId" />
+          </Key>
+          <Property Name="UrunId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrunAdı" Type="nvarchar" MaxLength="50" />
+          <Property Name="UrunKategori" Type="smallint" />
+          <Property Name="UrunFiyat" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UrunMarka" Type="nvarchar" MaxLength="50" />
+          <Property Name="Stok" Type="tinyint" />
+        </EntityType>
+        <Association Name="FK_Tbl_Satıslar_Tbl_Musteriler">
+          <End Role="Tbl_Musteriler" Type="Self.Tbl_Musteriler" Multiplicity="0..1" />
+          <End Role="Tbl_Satıslar" Type="Self.Tbl_Satıslar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Musteriler">
+              <PropertyRef Name="MsuteriId" />
+            </Principal>
+            <Dependent Role="Tbl_Satıslar">
+              <PropertyRef Name="Musteri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Satıslar_Tbl_Urunler">
+          <End Role="Tbl_Urunler" Type="Self.Tbl_Urunler" Multiplicity="0..1" />
+          <End Role="Tbl_Satıslar" Type="Self.Tbl_Satıslar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Urunler">
+              <PropertyRef Name="UrunId" />
+            </Principal>
+            <Dependent Role="Tbl_Satıslar">
+              <PropertyRef Name="Urun" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Urunler_Tbl_Kategoriler">
+          <End Role="Tbl_Kategoriler" Type="Self.Tbl_Kategoriler" Multiplicity="0..1" />
+          <End Role="Tbl_Urunler" Type="Self.Tbl_Urunler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Kategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Tbl_Urunler">
+              <PropertyRef Name="UrunKategori" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MvcDbStokModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Kategoriler" EntityType="Self.Tbl_Kategoriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Musteriler" EntityType="Self.Tbl_Musteriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Satıslar" EntityType="Self.Tbl_Satıslar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Urunler" EntityType="Self.Tbl_Urunler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_Satıslar_Tbl_Musteriler" Association="Self.FK_Tbl_Satıslar_Tbl_Musteriler">
+            <End Role="Tbl_Musteriler" EntitySet="Tbl_Musteriler" />
+            <End Role="Tbl_Satıslar" EntitySet="Tbl_Satıslar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Satıslar_Tbl_Urunler" Association="Self.FK_Tbl_Satıslar_Tbl_Urunler">
+            <End Role="Tbl_Urunler" EntitySet="Tbl_Urunler" />
+            <End Role="Tbl_Satıslar" EntitySet="Tbl_Satıslar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Urunler_Tbl_Kategoriler" Association="Self.FK_Tbl_Urunler_Tbl_Kategoriler">
+            <End Role="Tbl_Kategoriler" EntitySet="Tbl_Kategoriler" />
+            <End Role="Tbl_Urunler" EntitySet="Tbl_Urunler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MvcDbStokModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Kategoriler">
+          <Key>
+            <PropertyRef Name="KategoriID" />
+          </Key>
+          <Property Name="KategoriID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KategoriAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Urunler" Relationship="Self.FK_Tbl_Urunler_Tbl_Kategoriler" FromRole="Tbl_Kategoriler" ToRole="Tbl_Urunler" />
+        </EntityType>
+        <EntityType Name="Tbl_Musteriler">
+          <Key>
+            <PropertyRef Name="MsuteriId" />
+          </Key>
+          <Property Name="MsuteriId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MusteriAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MusteriSoyadı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Satıslar" Relationship="Self.FK_Tbl_Satıslar_Tbl_Musteriler" FromRole="Tbl_Musteriler" ToRole="Tbl_Satıslar" />
+        </EntityType>
+        <EntityType Name="Tbl_Satıslar">
+          <Key>
+            <PropertyRef Name="SatısId" />
+          </Key>
+          <Property Name="SatısId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Urun" Type="Int32" />
+          <Property Name="Musteri" Type="Int32" />
+          <Property Name="Adet" Type="Byte" />
+          <Property Name="Fiyat" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Tbl_Musteriler" Relationship="Self.FK_Tbl_Satıslar_Tbl_Musteriler" FromRole="Tbl_Satıslar" ToRole="Tbl_Musteriler" />
+          <NavigationProperty Name="Tbl_Urunler" Relationship="Self.FK_Tbl_Satıslar_Tbl_Urunler" FromRole="Tbl_Satıslar" ToRole="Tbl_Urunler" />
+        </EntityType>
+        <EntityType Name="Tbl_Urunler">
+          <Key>
+            <PropertyRef Name="UrunId" />
+          </Key>
+          <Property Name="UrunId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UrunAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UrunKategori" Type="Int16" />
+          <Property Name="UrunFiyat" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UrunMarka" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Stok" Type="Byte" />
+          <NavigationProperty Name="Tbl_Kategoriler" Relationship="Self.FK_Tbl_Urunler_Tbl_Kategoriler" FromRole="Tbl_Urunler" ToRole="Tbl_Kategoriler" />
+          <NavigationProperty Name="Tbl_Satıslar" Relationship="Self.FK_Tbl_Satıslar_Tbl_Urunler" FromRole="Tbl_Urunler" ToRole="Tbl_Satıslar" />
+        </EntityType>
+        <Association Name="FK_Tbl_Urunler_Tbl_Kategoriler">
+          <End Role="Tbl_Kategoriler" Type="Self.Tbl_Kategoriler" Multiplicity="0..1" />
+          <End Role="Tbl_Urunler" Type="Self.Tbl_Urunler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Kategoriler">
+              <PropertyRef Name="KategoriID" />
+            </Principal>
+            <Dependent Role="Tbl_Urunler">
+              <PropertyRef Name="UrunKategori" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Satıslar_Tbl_Musteriler">
+          <End Role="Tbl_Musteriler" Type="Self.Tbl_Musteriler" Multiplicity="0..1" />
+          <End Role="Tbl_Satıslar" Type="Self.Tbl_Satıslar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Musteriler">
+              <PropertyRef Name="MsuteriId" />
+            </Principal>
+            <Dependent Role="Tbl_Satıslar">
+              <PropertyRef Name="Musteri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Satıslar_Tbl_Urunler">
+          <End Role="Tbl_Urunler" Type="Self.Tbl_Urunler" Multiplicity="0..1" />
+          <End Role="Tbl_Satıslar" Type="Self.Tbl_Satıslar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Urunler">
+              <PropertyRef Name="UrunId" />
+            </Principal>
+            <Dependent Role="Tbl_Satıslar">
+              <PropertyRef Name="Urun" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MvcDbStokEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Tbl_Kategoriler" EntityType="Self.Tbl_Kategoriler" />
+          <EntitySet Name="Tbl_Musteriler" EntityType="Self.Tbl_Musteriler" />
+          <EntitySet Name="Tbl_Satıslar" EntityType="Self.Tbl_Satıslar" />
+          <EntitySet Name="Tbl_Urunler" EntityType="Self.Tbl_Urunler" />
+          <AssociationSet Name="FK_Tbl_Urunler_Tbl_Kategoriler" Association="Self.FK_Tbl_Urunler_Tbl_Kategoriler">
+            <End Role="Tbl_Kategoriler" EntitySet="Tbl_Kategoriler" />
+            <End Role="Tbl_Urunler" EntitySet="Tbl_Urunler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Satıslar_Tbl_Musteriler" Association="Self.FK_Tbl_Satıslar_Tbl_Musteriler">
+            <End Role="Tbl_Musteriler" EntitySet="Tbl_Musteriler" />
+            <End Role="Tbl_Satıslar" EntitySet="Tbl_Satıslar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Satıslar_Tbl_Urunler" Association="Self.FK_Tbl_Satıslar_Tbl_Urunler">
+            <End Role="Tbl_Urunler" EntitySet="Tbl_Urunler" />
+            <End Role="Tbl_Satıslar" EntitySet="Tbl_Satıslar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MvcDbStokModelStoreContainer" CdmEntityContainer="MvcDbStokEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MvcDbStokModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Kategoriler">
+            <EntityTypeMapping TypeName="MvcDbStokModel.Tbl_Kategoriler">
+              <MappingFragment StoreEntitySet="Tbl_Kategoriler">
+                <ScalarProperty Name="KategoriID" ColumnName="KategoriID" />
+                <ScalarProperty Name="KategoriAdı" ColumnName="KategoriAdı" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Musteriler">
+            <EntityTypeMapping TypeName="MvcDbStokModel.Tbl_Musteriler">
+              <MappingFragment StoreEntitySet="Tbl_Musteriler">
+                <ScalarProperty Name="MsuteriId" ColumnName="MsuteriId" />
+                <ScalarProperty Name="MusteriAdı" ColumnName="MusteriAdı" />
+                <ScalarProperty Name="MusteriSoyadı" ColumnName="MusteriSoyadı" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Satıslar">
+            <EntityTypeMapping TypeName="MvcDbStokModel.Tbl_Satıslar">
+              <MappingFragment StoreEntitySet="Tbl_Satıslar">
+                <ScalarProperty Name="SatısId" ColumnName="SatısId" />
+                <ScalarProperty Name="Urun" ColumnName="Urun" />
+                <ScalarProperty Name="Musteri" ColumnName="Musteri" />
+                <ScalarProperty Name="Adet" ColumnName="Adet" />
+                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Urunler">
+            <EntityTypeMapping TypeName="MvcDbStokModel.Tbl_Urunler">
+              <MappingFragment StoreEntitySet="Tbl_Urunler">
+                <ScalarProperty Name="UrunId" ColumnName="UrunId" />
+                <ScalarProperty Name="UrunAdı" ColumnName="UrunAdı" />
+                <ScalarProperty Name="UrunKategori" ColumnName="UrunKategori" />
+                <ScalarProperty Name="UrunFiyat" ColumnName="UrunFiyat" />
+                <ScalarProperty Name="UrunMarka" ColumnName="UrunMarka" />
+                <ScalarProperty Name="Stok" ColumnName="Stok" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
